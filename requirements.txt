@@ -1,0 +1,5 @@
+carla==0.9.15
+pygame
+numpy
+h5py
+flow_vis
