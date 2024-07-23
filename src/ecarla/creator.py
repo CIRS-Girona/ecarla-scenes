@@ -55,3 +55,75 @@ class ScenarioCreator(ScenarioBase):
         """Initializes manual control.
         """
         self.control = ManualControl(world=self.world, actor=vehicle)
+
+    def _render(self, data: Dict[str, Any]) -> None:
+        """Renders RGB image in window.
+        """
+        if "rgb" in data.keys():
+            if data["rgb"] is not None:
+                rgb_image = extract.extract_rgb(image=data["rgb"])
+                self.game.render_image(image=rgb_image, blend=False)
+        self.game.render_sim_time(time=self.sim_time)
+        # Recording status
+        if self.record_flag == self.end_record_flag:
+            self.game.render_text(text="Not recording...")
+        elif self.record_flag == True and self.end_record_flag == False:
+            self.game.render_text(text="Recording...")
+        # Flip display
+        self.game.flip()
+
+    # === Main Looping Function === #
+    def loop(self) -> None:
+        """Loops synchronous simulation.
+        """
+        try:
+            self.sim_time = 0.0
+            self.real_time = time.time()
+            # Run in synchronous mode
+            with SensorSync(
+                world=self.world, sensors=self.active_sensors,
+                start_time=self.start_time, delta_time=self.delta_time
+            ) as sensor_sync:
+                self.record_flag = False
+                self.end_record_flag = False
+                # Main loop
+                while True:
+                    # Start recording
+                    if self.sim_time > self.record_start_time and self.record_flag == False:
+                        self.client.start_recorder(self.out_path, True)
+                        self.record_flag = True
+                    # Stop recording
+                    if self.sim_time > (
+                        self.record_start_time + self.record_delta_time
+                    ) and self.record_flag == True and self.end_record_flag == False:
+                        self.client.stop_recorder()
+                        self.end_record_flag = True
+
+                    # Tick PyGame window
+                    if self.game.should_quit():
+                        return
+                    self.game.tick_clock()
+                    # Parse data
+                    data = sensor_sync.tick(timeout=2.0)
+                    # Render data
+                    self._render(data=data)
+                    # Vehicle control
+                    self.game.tick_clock_busy_loop(fps=60)
+                    game_clock = self.game.get_clock()
+                    if self.control.parse_control(clock=game_clock):
+                        return
+
+                    # Print status
+                    print("=====", "Frame ID:", data["world"], "=====")
+                    print("RGB Data:", data["rgb"] is not None)
+                    print("Sim Time:", str(timedelta(seconds=self.sim_time)))
+                    print("Real Time:", str(timedelta(seconds=time.time() - self.real_time)))
+
+                    # Update simulation time
+                    self.sim_time += self.delta_time
+        finally:
+            self.game.quit()
+            self._reset_settings()
+            self.vehicle_spawner.destroy_vehicles()
+            self._destroy_sensors()
+            print("All simulation elements reset.")
