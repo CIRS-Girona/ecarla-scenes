@@ -3,7 +3,6 @@ import time
 import carla
 import pygame
 
-from .base import ScenarioBase
 from .utils.game import Game
 from .utils.sensor import Sensor
 from .utils.sync import SensorSync

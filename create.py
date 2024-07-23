@@ -1,7 +1,7 @@
 import carla
 import pygame
 
-from .src.ecarla.creator import ScenarioCreator
+from src.ecarla.creator import ScenarioCreator
 
 from typing import Any, Dict, List, Tuple, Callable
 

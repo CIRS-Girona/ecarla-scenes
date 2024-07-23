@@ -70,9 +70,9 @@ class ManualControl():
                 if self.should_quit(event.key):
                     return True
 
-            # Reverse gear
-            if event.key == K_q:
-                self.vehicle_control.gear = 1 if self.vehicle_control.reverse else -1
+                # Reverse gear
+                if event.key == K_q:
+                    self.vehicle_control.gear = 1 if self.vehicle_control.reverse else -1
         # Vehicle control
         self._parse_vehicle_keys(keys=pygame.key.get_pressed(), ms=clock.get_time())
         self.vehicle_control.reverse = self.vehicle_control.gear < 0
