@@ -49,4 +49,49 @@ class Sensor():
             self.sensor_obj, self.transform, attach_to=self.actor
         )
 
-    # TODO: Add code here
+    def _parse_data(
+        self,
+        world_frame: Any,
+        sensor_queue: queue.Queue,
+        timeout: float = 2.0
+    ) -> Any:
+        """Parses sensor data.
+        """
+        while True:
+            try:
+                data = sensor_queue.get(timeout=timeout)
+                if data.frame == world_frame:
+                    return data
+            except Empty:
+                return None
+
+    # === User Functions === #
+    def get_name(self) -> str:
+        """Returns sensor name.
+        """
+        return self.name
+
+    def get_obj(self) -> Any:
+        """Returns sensor object.
+        """
+        return self.sensor_obj
+
+    def read_data(
+        self,
+        world_frame: Any,
+        sensor_queue: queue.Queue,
+        timeout: float = 2.0
+    ) -> Any:
+        """User sensor data reading function.
+        """
+        data = None
+        if self.sync_flag == False:
+            data = self._parse_data(world_frame, sensor_queue, timeout)
+            if data is not None:
+                self.sync_flag = True
+                self.frame_count = 1
+        else:
+            if self.frame_count % self.parsing_freq == 0:
+                data = self._parse_data(world_frame, sensor_queue, timeout)
+            self.frame_count += 1
+        return data
