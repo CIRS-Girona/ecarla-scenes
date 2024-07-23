@@ -19,3 +19,5 @@ class ManualControl():
         self.vehicle_control = carla.VehicleControl()
         self.vehicle_lights = carla.VehicleLightState.NONE
         self.steer_cache = 0.0
+
+    # TODO: Continue code here

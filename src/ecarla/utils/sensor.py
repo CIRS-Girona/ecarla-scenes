@@ -48,3 +48,5 @@ class Sensor():
         self.sensor_obj = self.world.spawn_actor(
             self.sensor_obj, self.transform, attach_to=self.actor
         )
+
+    # TODO: Add code here
