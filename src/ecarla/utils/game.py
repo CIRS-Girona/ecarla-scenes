@@ -52,5 +52,56 @@ class Game():
         pygame.quit()
         print("PyGame window killed.")
 
-    # === User Functions === #
-    # TODO: Add code here
+    # === Clock Functions === #
+    def get_clock(self) -> Any:
+        """Returns PyGame clock.
+        """
+        return self.clock
+
+    def tick_clock(self) -> None:
+        """Ticks PyGame clock.
+        """
+        self.clock.tick()
+
+    def tick_clock_busy_loop(self, fps: int = 60) -> None:
+        """Ticks PyGame clock busy loop.
+        """
+        self.clock.tick_busy_loop(fps)
+
+    # === Rendering Functions === #
+    def render_image(self, image: np.ndarray, blend: bool = False) -> None:
+        """Renders image.
+        """
+        surf_data = pygame.surfarray.make_surface(
+            image.swapaxes(0, 1)
+        )
+        if blend:
+            surf_data.set_alpha(100)
+        self.surface.blit(surf_data, (0, 0))
+
+    def render_sim_time(self, time: float) -> None:
+        """Renders simulation time.
+        """
+        self.surface.blit(self.font.render(
+            "Simulation time: %s" % str(timedelta(seconds=time)),
+            True, (255, 255, 255)
+        ), (8, 10))
+
+    def render_text(self, text: str) -> None:
+        """Renders text.
+        """
+        self.surface.blit(
+            self.font.render(text, True, (255, 255, 255)), (8, 26)
+        )
+
+    # === Quit Function === #
+    def should_quit(self) -> bool:
+        """Quits PyGame on key stroke.
+        """
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    return True
+        return False
