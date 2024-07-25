@@ -21,10 +21,11 @@ def extract_events(
     events[:, 1] = raw_data[:]["y"]
     events[:, 2] = sim_time*1e6
     events[:, 3] = raw_data[:]["pol"]
+    events = events.astype(np.int64)
     # Extract events image
     image = np.zeros((data.height, data.width, 3), dtype=np.uint8)
     image[raw_data[:]["y"], raw_data[:]["x"], raw_data[:]["pol"]*2] = 255
-    return events, image
+    return events, None, image
 
 
 # TODO: Add surface format change
@@ -40,7 +41,7 @@ def extract_rgb(
     rgb = rgb[:, :, ::-1]
     # Extract simulation time
     time = int(sim_time*1e6)
-    return rgb, time
+    return rgb, time, rgb
 
 
 def extract_gray(

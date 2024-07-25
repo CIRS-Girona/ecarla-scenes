@@ -61,7 +61,7 @@ class ScenarioCreator(ScenarioBase):
         """
         if "rgb" in data.keys():
             if data["rgb"] is not None:
-                rgb_image = extract.extract_rgb(image=data["rgb"])
+                rgb_image = extract.extract_rgb(data=data["rgb"], sim_time=self.sim_time)[2]
                 self.game.render_image(image=rgb_image, blend=False)
         self.game.render_sim_time(time=self.sim_time)
         # Recording status
