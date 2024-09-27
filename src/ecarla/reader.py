@@ -1,3 +1,4 @@
+import os
 import time
 
 import carla
@@ -13,6 +14,7 @@ from .utils.control import ManualControl
 
 from .utils import extract
 
+from ewiz.core.utils import create_dir, save_json
 from ewiz.data.writers import WriterEvents, WriterGray, WriterFlow
 
 from datetime import timedelta
@@ -41,10 +43,23 @@ class ScenarioReader(ScenarioBase):
         self.record_path = record_path
         self.record_delta_time = record_delta_time
         # TODO: Change hard-coded values
+        self.out_path = create_dir(self.out_path)
         self.images = {"events": None, "gray": None, "flow": None}
+        self._save_props()
         self._init_writers()
         self._read_recording()
         self._init_sensors(vehicle=self.active_actor)
+
+    # TODO: Check format requirements
+    def _save_props(self) -> None:
+        """Saves camera properties.
+        """
+        props = {}
+        props.update({"sensor_size": self.resolution})
+        print("# ===== Saving Data Properties ===== #")
+        file_path = os.path.join(self.out_path, "props.json")
+        save_json(props, file_path)
+        print("# ===== Data Properties Saved ===== #")
 
     def _init_writers(self) -> None:
         """Initializes writers.

@@ -45,14 +45,14 @@ if __name__ == "__main__":
     # Setup simulation
     client = carla.Client("localhost", 2000)
     resolution = (260, 346)
-    out_path = "/home/jad/Documents/datasets/carla/ecarla-scenes/carla_data"
+    out_path = "/home/jad/datasets/carla/ewiz/test1"
     sensors = sensors
-    start_time = 20.0
-    delta_time = 0.1
+    start_time = 1.0
+    delta_time = 0.01
     world_map = None
     world_weather = None
-    record_path = "/home/jad/Documents/datasets/carla/scenarios/carla_data.log"
-    record_delta_time = 60.0
+    record_path = "/home/jad/datasets/carla/scenarios/test1.log"
+    record_delta_time = 40.0
 
     # Create scenario object
     read_scenario = ReadScenario(
