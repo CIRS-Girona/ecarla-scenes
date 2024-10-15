@@ -9,14 +9,14 @@ from read import ReadScenario
 if __name__ == "__main__":
     # Camera transforms and sensors
     cam_transform = carla.Transform(
-        carla.Location(x=-5.5, z=2.8), carla.Rotation(pitch=-15)
+        carla.Location(x=2.8, z=1.8), carla.Rotation(pitch=-15)
     )
     sensors = [
         {
             "name": "gray",
             "type": "sensor.camera.rgb",
             "options": {
-                "sensor_tick": "0.4"
+                "sensor_tick": "0.04"
             },
             "transform": cam_transform,
             "converter": None
@@ -45,14 +45,14 @@ if __name__ == "__main__":
     # Setup simulation
     client = carla.Client("localhost", 2000)
     resolution = (260, 346)
-    out_path = "/home/jad/datasets/carla/ewiz/test1"
+    out_path = "/home/jad/datasets/carla/ewiz/town10_forward_clear-noon"
     sensors = sensors
     start_time = 1.0
-    delta_time = 0.01
-    world_map = None
-    world_weather = None
-    record_path = "/home/jad/datasets/carla/scenarios/test1.log"
-    record_delta_time = 40.0
+    delta_time = 0.001
+    world_map = "Town10HD"
+    world_weather = "ClearNoon"
+    record_path = "/home/jad/datasets/carla/scenarios/town10_forward_clear-noon.log"
+    record_delta_time = 60.0
 
     # Create scenario object
     read_scenario = ReadScenario(

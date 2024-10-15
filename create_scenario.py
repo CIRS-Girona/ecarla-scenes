@@ -10,9 +10,9 @@ if __name__ == "__main__":
     # Setup simulation
     client = carla.Client("localhost", 2000)
     resolution = (260, 346)
-    out_path = "/home/jad/datasets/carla/scenarios/test1.log"
-    world_map = None
-    world_weather = None
+    out_path = "/home/jad/datasets/carla/scenarios/town2_backward_clear-sunset.log"
+    world_map = "Town02"
+    world_weather = "ClearSunset"
     vehicle_type = "vehicle.tesla.cybertruck"
     record_start_time = 20
     record_delta_time = 60
