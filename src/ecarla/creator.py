@@ -8,7 +8,7 @@ from .utils.game import Game
 from .utils.sensor import Sensor
 from .utils.sync import SensorSync
 
-from .utils.spawn import VehicleSpawner
+from .utils.spawn import VehicleSpawner, TrafficSpawner
 from .utils.control import ManualControl
 
 from .utils import extract
@@ -31,6 +31,8 @@ class ScenarioCreator(ScenarioBase):
         vehicle_type: str = "vehicle.tesla.cybertruck",
         record_start_time: float = 20.0,
         record_delta_time: float = 60.0,
+        num_vehicles: int = None,
+        num_peds: int = None,
         **kwargs
     ) -> None:
         super().__init__(
@@ -40,6 +42,8 @@ class ScenarioCreator(ScenarioBase):
         self.vehicle_type = vehicle_type
         self.record_start_time = record_start_time
         self.record_delta_time = record_delta_time
+        self.num_vehicles = num_vehicles
+        self.num_peds = num_peds
         self._init_vehicles()
         self._init_sensors(vehicle=self.active_vehicle)
         self._init_control(vehicle=self.active_vehicle)
@@ -49,7 +53,14 @@ class ScenarioCreator(ScenarioBase):
         """
         self.vehicle_spawner = VehicleSpawner(client=self.client, world=self.world)
         self.vehicle_spawner.spawn_vehicles(num_vehicles=1, vehicle_type=self.vehicle_type)
+        self.traffic_spawner = TrafficSpawner(
+            client=self.client,
+            world=self.world,
+            num_vehicles=self.num_vehicles,
+            num_peds=self.num_peds
+        )
         self.active_vehicle = self.vehicle_spawner.get_vehicles()[0]
+        time.sleep(10)
 
     def _init_control(self, vehicle: Any) -> None:
         """Initializes manual control.
@@ -126,4 +137,5 @@ class ScenarioCreator(ScenarioBase):
             self._reset_settings()
             self.vehicle_spawner.destroy_vehicles()
             self._destroy_sensors()
+            self.traffic_spawner.destroy_traffic()
             print("All simulation elements reset.")

@@ -35,7 +35,7 @@ if __name__ == "__main__":
             "name": "flow",
             "type": "sensor.camera.optical_flow",
             "options": {
-                "sensor_tick": "0.4"
+                "sensor_tick": "0.04"
             },
             "transform": cam_transform,
             "converter": None
@@ -45,13 +45,13 @@ if __name__ == "__main__":
     # Setup simulation
     client = carla.Client("localhost", 2000)
     resolution = (260, 346)
-    out_path = "/home/jad/datasets/carla/ewiz/town10_forward_clear-noon"
+    out_path = "/home/jad/datasets/carla/ewiz/dynamic_town10_forward_cloudy-noon"
     sensors = sensors
     start_time = 1.0
-    delta_time = 0.001
-    world_map = "Town10HD"
-    world_weather = "ClearNoon"
-    record_path = "/home/jad/datasets/carla/scenarios/town10_forward_clear-noon.log"
+    delta_time = 0.01
+    world_map = "Town10HD_Opt"
+    world_weather = "CloudyNoon"
+    record_path = "/home/jad/datasets/carla/scenarios/dynamic_town10_forward_cloudy-noon.log"
     record_delta_time = 60.0
 
     # Create scenario object

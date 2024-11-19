@@ -25,19 +25,21 @@ def get_town_and_weather_names(
 
 if __name__ == "__main__":
     # Main directories
-    data_dir = ""
-    out_dir = ""
+    data_dir = "/home/jad/datasets/carla/scenarios/static"
+    out_dir = "/home/jad/datasets/carla/ewiz/static"
 
     # Data associations
     towns_assoc = {
-        "town2_": "Town02",
-        "town4_": "Town04",
-        "town7_": "Town07",
-        "town10_": "Town10HD"
+        "_town2_": "Town02",
+        "_town4_": "Town04",
+        "_town7_": "Town07",
+        "_town10_": "Town10HD"
     }
     weather_assoc = {
         "_clear-sunset": "ClearSunset",
-        "_clear-noon": "ClearNoon"
+        "_clear-noon": "ClearNoon",
+        "_cloudy-sunset": "CloudySunset",
+        "_cloudy-noon": "CloudyNoon"
     }
 
     # Camera transforms and sensors
@@ -58,8 +60,8 @@ if __name__ == "__main__":
             "name": "events",
             "type": "sensor.camera.dvs",
             "options": {
-                "positive_threshold": "0.5",
-                "negative_threshold": "0.4"
+                "positive_threshold": "0.3",
+                "negative_threshold": "0.3"
             },
             "transform": cam_transform,
             "converter": None
@@ -84,7 +86,7 @@ if __name__ == "__main__":
 
             # Setup simulation
             client = carla.Client("localhost", 2000)
-            resolution = (260, 346)
+            resolution = (720, 1280)
             out_path = save_path
             sensors = sensors
             start_time = 1.0

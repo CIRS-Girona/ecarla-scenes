@@ -8,6 +8,7 @@ import random
 from typing import Any, Dict, List, Tuple, Callable
 
 
+# TODO: General traffic spawner structure can be improved
 class VehicleSpawner():
     """Vehicle spawner.
     """
@@ -82,11 +83,19 @@ class VehicleSpawner():
 class TrafficSpawner():
     """Traffic spawner.
     """
-    def __init__(self, client: Any, world: Any) -> None:
+    def __init__(
+        self,
+        client: Any,
+        world: Any,
+        num_vehicles: int = 20,
+        num_peds: int = 30
+    ) -> None:
         self.client = client
         self.world = world
         self.map = self.world.get_map()
         self.settings = self.world.get_settings()
+        self.num_vehicles = num_vehicles
+        self.num_peds = num_peds
 
         # All available traffic in the simulation
         self.all_traffic = []
@@ -98,9 +107,10 @@ class TrafficSpawner():
 
         # Spawn traffic
         self._init_traffic_manager()
-        # TODO: Add as argument after testing
-        self.spawn_vehicles(20)
-        # TODO: Check why walkers are not working?
+        if num_vehicles is not None:
+            self.spawn_vehicles(num_vehicles)
+        if num_peds is not None:
+            self.spawn_walkers(num_peds)
 
     def _get_bp_lib(self, filter: str, generation: str) -> List:
         """Gets blueprint library.
@@ -136,11 +146,13 @@ class TrafficSpawner():
         """Destroy all traffic.
         """
         # Destroy vehicles
-        self.client.apply_batch([carla.command.DestroyActor(v) for v in self.all_vehicles])
+        if self.num_vehicles is not None:
+            self.client.apply_batch([carla.command.DestroyActor(v) for v in self.all_vehicles])
         # Destroy walkers
-        for i in range(0, len(self.all_ids), 2):
-            self.all_walker_actors[i].stop()
-        self.client.apply_batch([carla.command.DestroyActor(x) for x in self.all_ids])
+        if self.num_peds is not None:
+            for i in range(0, len(self.all_ids), 2):
+                self.all_walker_actors[i].stop()
+            self.client.apply_batch([carla.command.DestroyActor(x) for x in self.all_ids])
         print("All traffic destroyed.")
 
     def spawn_walkers(self, num_walkers: int = 10, seed: int = 0) -> None:
@@ -193,7 +205,7 @@ class TrafficSpawner():
             else:
                 self.all_walkers.append({"walker_id": walkers_result[i].actor_id})
                 walkers_speed_.append(walkers_speed[i])
-            walkers_speed = walkers_speed_
+        walkers_speed = walkers_speed_
 
         # Spawn walkers controller
         controllers_batch = []

@@ -49,6 +49,7 @@ class ScenarioReader(ScenarioBase):
         self._init_writers()
         self._read_recording()
         self._init_sensors(vehicle=self.active_actor)
+        time.sleep(10)
 
     # TODO: Check format requirements
     def _save_props(self) -> None:
@@ -73,7 +74,18 @@ class ScenarioReader(ScenarioBase):
         """
         self.client.replay_file(self.record_path, 0, 0, 0, False)
         self.world.tick()
-        self.active_actor = self.world.get_actors().filter("vehicle.*")[0]
+        self.world_actors = self.world.get_actors().filter("vehicle.*")
+        self.active_actor = self.world_actors[0]
+        for actor in self.world_actors:
+            if actor.attributes["role_name"] == "hero":
+                self.active_actor = actor
+
+    def _destroy_actors(self) -> None:
+        """Destroy all actors.
+        """
+        actors = self.world.get_actors()
+        for actor in actors:
+            actor.destroy()
 
     def _extract_data(self, data: Dict[str, Any]) -> None:
         """Extracts sensor data.
@@ -169,8 +181,8 @@ class ScenarioReader(ScenarioBase):
         finally:
             self.game.quit()
             self._reset_settings()
-            self.active_actor.destroy()
-            print("Vehicle destroyed.")
+            self._destroy_actors()
+            print("Actors destroyed.")
             self._destroy_sensors()
             print("All simulation elements reset.")
             print("# === Mapping Data === #")

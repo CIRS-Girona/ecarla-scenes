@@ -18,7 +18,9 @@ class CreateScenario():
         world_weather: str = None,
         vehicle_type: str = "vehicle.tesla.cybertruck",
         record_start_time: float = 20.0,
-        record_delta_time: float = 60.0
+        record_delta_time: float = 60.0,
+        num_vehicles: int = None,
+        num_peds: int = None
     ) -> None:
         # Create required actors for scenario creator
         cam_transform = carla.Transform(
@@ -46,6 +48,8 @@ class CreateScenario():
             init_sleep=0.0,
             vehicle_type=vehicle_type,
             record_start_time=record_start_time,
-            record_delta_time=record_delta_time
+            record_delta_time=record_delta_time,
+            num_vehicles=num_vehicles,
+            num_peds=num_peds
         )
         scenario_creator.loop()
