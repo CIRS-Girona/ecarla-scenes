@@ -26,7 +26,7 @@ def get_town_and_weather_names(
 if __name__ == "__main__":
     # Main directories
     data_dir = "/home/jad/datasets/carla/scenarios/static"
-    out_dir = "/home/jad/datasets/carla/ewiz/static"
+    out_dir = "/home/jad/datasets/carla/ewiz/260p/static"
 
     # Data associations
     towns_assoc = {
@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
             # Setup simulation
             client = carla.Client("localhost", 2000)
-            resolution = (720, 1280)
+            resolution = (260, 346)
             out_path = save_path
             sensors = sensors
             start_time = 1.0
