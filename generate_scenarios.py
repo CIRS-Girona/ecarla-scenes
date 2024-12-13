@@ -25,8 +25,8 @@ def get_town_and_weather_names(
 
 if __name__ == "__main__":
     # Main directories
-    data_dir = "/home/jad/datasets/carla/scenarios/static"
-    out_dir = "/home/jad/datasets/carla/ewiz/260p/static"
+    data_dir = "/home/jad/datasets/carla/scenarios/both"
+    out_dir = "/home/jad/datasets/carla/ewiz/260p/both"
 
     # Data associations
     towns_assoc = {

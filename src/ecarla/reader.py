@@ -74,6 +74,7 @@ class ScenarioReader(ScenarioBase):
         """
         self.client.replay_file(self.record_path, 0, 0, 0, False)
         self.world.tick()
+        # TODO: Use this later
         self.world_actors = self.world.get_actors().filter("vehicle.*")
         self.active_actor = self.world_actors[0]
         for actor in self.world_actors:
@@ -83,9 +84,12 @@ class ScenarioReader(ScenarioBase):
     def _destroy_actors(self) -> None:
         """Destroy all actors.
         """
+        self.active_actor.destroy()
+        """
         actors = self.world.get_actors()
         for actor in actors:
             actor.destroy()
+        """
 
     def _extract_data(self, data: Dict[str, Any]) -> None:
         """Extracts sensor data.

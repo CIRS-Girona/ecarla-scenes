@@ -24,7 +24,7 @@ class ScenarioBase():
         world_map: str = None,
         world_weather: str = None,
         client_timeout: float = 10.0,
-        init_sleep: float = 5.0
+        init_sleep: float = 10.0
     ) -> None:
         self.client = client
         self.resolution = resolution

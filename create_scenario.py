@@ -10,14 +10,14 @@ if __name__ == "__main__":
     # Setup simulation
     client = carla.Client("localhost", 2000)
     resolution = (720, 1080)
-    out_path = "/home/jad/datasets/carla/scenarios/cars/cars_town4_sway_cloudy-noon.log"
-    world_map = "Town04"
+    out_path = "/home/jad/datasets/carla/scenarios/both/dynamic_town10_sway_cloudy-noon.log"
+    world_map = "Town10HD"
     world_weather = "CloudyNoon"
     vehicle_type = "vehicle.tesla.cybertruck"
     record_start_time = 20
     record_delta_time = 60
-    num_vehicles = 50
-    num_peds = None
+    num_vehicles = 30
+    num_peds = 20
 
     # Create scenario object
     create_scenario = CreateScenario(
